@@ -1,0 +1,39 @@
+{
+  "name": "adventofcode",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "https://github.com/strothj/adventofcode.git",
+  "author": "jason@jasons.io <jason@jasons.io>",
+  "license": "MIT",
+  "scripts": {
+    "test": "jest",
+    "lint": "tslint -t verbose -p . ./20*/**/*.ts"
+  },
+  "jest": {
+    "transform": {
+      "^.+\\.tsx?$": "ts-jest"
+    },
+    "testRegex": "(/__tests__/.*|(\\.|/)(test|spec))\\.(jsx?|tsx?)$",
+    "moduleFileExtensions": [
+      "ts",
+      "tsx",
+      "js",
+      "jsx",
+      "json"
+    ]
+  },
+  "devDependencies": {
+    "@types/jest": "^21.1.8",
+    "jest": "^21.2.1",
+    "prettier": "^1.8.2",
+    "ts-jest": "^21.2.4",
+    "ts-node": "^3.3.0",
+    "tslint": "^5.8.0",
+    "tslint-config-airbnb": "^5.4.2",
+    "tslint-config-prettier": "^1.6.0",
+    "tslint-eslint-rules": "^4.1.1",
+    "tslint-language-service": "^0.9.6",
+    "tslint-plugin-prettier": "^1.3.0",
+    "typescript": "^2.6.2"
+  }
+}
