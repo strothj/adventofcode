@@ -1,6 +1,6 @@
 import puzzleInput from "./puzzleInput";
 
-export default function day01(input: string) {
+export function day01_part1(input: string) {
   return input
     .toString()
     .split("")
@@ -11,5 +11,17 @@ export default function day01(input: string) {
     }, 0);
 }
 
+export function day01_part2(input: string) {
+  return input
+    .toString()
+    .split("")
+    .map(d => parseInt(d, 10))
+    .reduce((acc, value, i, arr) => {
+      const nextDigit =
+        i < arr.length / 2 ? arr[i + arr.length / 2] : arr[i - arr.length / 2];
+      return value === nextDigit ? acc + value : acc;
+    }, 0);
+}
+
 /* tslint:disable-next-line:no-console */
-console.log(day01(puzzleInput));
+console.log(day01_part2(puzzleInput));
