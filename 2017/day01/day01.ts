@@ -1,5 +1,3 @@
-import puzzleInput from "./puzzleInput";
-
 export function day01_part1(input: string) {
   return input
     .toString()
@@ -22,6 +20,3 @@ export function day01_part2(input: string) {
       return value === nextDigit ? acc + value : acc;
     }, 0);
 }
-
-/* tslint:disable-next-line:no-console */
-console.log(day01_part2(puzzleInput));
