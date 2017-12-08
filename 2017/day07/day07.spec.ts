@@ -22,5 +22,6 @@ test(part1, () => {
 });
 
 test(part2, () => {
-  // given(testcase).expect(60);
+  given(testcase).expect(60);
+  given(puzzleInput).expect(1079);
 });

@@ -17,10 +17,32 @@ export function part1(input: string) {
 export function part2(input: string) {
   const programs = buildTree(input).filter(p => p.children);
 
-  /* tslint:disable-next-line:no-console */
-  console.log(programs.length);
+  const childWeightAdjustments = programs
+    .map(p => {
+      const children = Array.from(p.children!.values());
 
-  return 3;
+      const modeWeight = Array.from(
+        children
+          .reduce((acc, child) => {
+            const childWeight = getChildWeight(child);
+            acc.set(childWeight, (acc.get(childWeight) || 0) + 1);
+            return acc;
+          }, new Map<number, number>())
+          .entries()
+      ).find(mw => mw[1] > 1)![0];
+
+      const imbalancedChild = children.find(
+        c => getChildWeight(c) !== modeWeight
+      );
+      if (!imbalancedChild) return 0;
+
+      return (
+        imbalancedChild.weight! - (getChildWeight(imbalancedChild) - modeWeight)
+      );
+    })
+    .filter(c => c > 0);
+
+  return childWeightAdjustments[childWeightAdjustments.length - 1];
 }
 
 function buildTree(input: string) {
@@ -29,9 +51,10 @@ function buildTree(input: string) {
   input.split("\n").forEach(line => {
     const cols = line.split(" ");
     const program: IProgram = programs.get(cols[0]) || {
-      name: cols[0],
-      weight: parseInt(cols[1].substr(1, cols[1].length - 1), 10)
+      name: cols[0]
     };
+    program.weight = parseInt(cols[1].substr(1, cols[1].length - 1), 10);
+
     if (cols.length > 3) {
       program.children = new Map();
       cols
@@ -49,3 +72,33 @@ function buildTree(input: string) {
 
   return [...programs.values()];
 }
+
+function getChildWeight(child: IProgram) {
+  let weight = child.weight!;
+  if (child.children) weight += sumChildren(child.children!);
+  return weight;
+}
+
+function sumChildren(input: Map<string, IProgram>) {
+  let sum = 0;
+  for (const child of input.values()) {
+    sum += child.weight || 0;
+    if (child.children) sum += sumChildren(child.children);
+  }
+  return sum;
+}
+
+// const testcase = `pbga (66)
+// xhth (57)
+// ebii (61)
+// havc (66)
+// ktlj (57)
+// fwft (72) -> ktlj, cntj, xhth
+// qoyq (66)
+// padx (45) -> pbga, havc, qoyq
+// tknk (41) -> ugml, padx, fwft
+// jptl (61)
+// ugml (68) -> gyxo, ebii, jptl
+// gyxo (61)
+// cntj (57)`;
+// part2(testcase);
