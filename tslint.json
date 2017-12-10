@@ -8,6 +8,9 @@
   "rulesDirectory": ["tslint-plugin-prettier"],
   "rules": {
     "no-implicit-dependencies": ["true", "dev"],
+    "no-console": false,
+    "array-type": false,
+    "curly": false,
     "variable-name": false,
     "prettier": true
   }

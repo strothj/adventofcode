@@ -10,28 +10,26 @@ export function part2(input: string) {
 
 function solve(input: string) {
   let largestEver = 0;
-  // @ts-ignore
   const registers = new Map<string, number>();
+
   // @ts-ignore
-  const get = (register: string) => registers.get(register) || 0;
-  // @ts-ignore
-  const set = (register: string, value: number) => {
-    registers.set(register, value);
-    largestEver = value > largestEver ? value : largestEver;
+  const { get, set } = {
+    get: (register: string) => registers.get(register) || 0,
+    set: (register: string, value: number) => {
+      registers.set(register, value);
+      largestEver = value > largestEver ? value : largestEver;
+    }
   };
 
-  const instructions = input
+  input
     .split("\n")
     .map(line => line.split(" "))
+    .map(args => args.map((v, i) => (i !== 1 ? v : v === "inc" ? "+" : "-")))
     .map(
-      args =>
-        `if (get("${args[4]}") ${args[5]} ${args[6]}) set("${args[0]}", get("${
-          args[0]
-        }") ${args[1] === "inc" ? "+" : "-"} ${args[2]});`
+      ([r, op, inc, , t1, te, t2]) =>
+        `if (get("${t1}") ${te} ${t2}) set("${r}", get("${r}") ${op} ${inc});`
     )
-    .join("\n");
-
-  eval(instructions);
+    .forEach(instruction => eval(instruction));
 
   return {
     largest: Array.from(registers.values()).reduce(
